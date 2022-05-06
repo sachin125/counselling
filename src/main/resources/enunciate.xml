@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<enunciate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://enunciate.codehaus.org/schemas/enunciate-1.21.xsd">
+
+	 <api-classes>
+	   <exclude pattern="com.inn.api.**"/>    
+	   <exclude pattern="com.inn.activiti.**"/>    
+	   <exclude pattern="com.inn.autogen.**"/>    
+	   <exclude pattern="com.inn.wadl.**"/>    
+	   <exclude pattern="eu.**"/>    
+	    <exclude pattern="com.inn.counselling.quartzscheduler.**"/>  
+	   <exclude pattern="com.inn.counselling.apkinfo.**"/>
+	   <exclude pattern="com.inn.counselling.report_analytics.**"/>
+	 </api-classes>
+	 <deployment host="localhost:8080/REPO/counselling/counselling/1.0/counselling/target" />
+	 
+	 <services>
+		<rest defaultRestSubcontext="/rest" />
+	  </services>
+	  
+	  <modules>
+	  
+	  	<spring-app disabled="true">
+	  	<springImport uri="classpath:application.xml"/>
+	  	</spring-app>
+	  	
+	  	<docs docsDir="/docs" splashPackage="com.inn.counselling.rest" title="Greetings Web Service API" copyright="innoeye">
+	  	</docs>
+	  	
+	  </modules>
+
+</enunciate>

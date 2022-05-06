@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?><schemas>
+    <schema>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <table name="ID_GENERATOR">
+            <pk column="GENERATOR_KEY" name="PRIMARY"/>
+            <column name="GENERATOR_KEY" not-null="true" size="255" type="varchar"/>
+            <column name="GENERATOR_VALUE" size="19" type="bigint"/>
+        </table>
+        
+        <table name="activity_stream">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="19" type="bigint"/>
+            <column name="date" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="entityId" size="255" type="varchar"/>
+            <column name="message" not-null="true" size="255" type="varchar"/>
+            <column name="userid" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="type" size="255" type="varchar"/>
+            <fk column="userid" delete-action="restrict" name="FKo57rjbw2nrfg84ko8ngge543c" to-table="users"/>
+            <index column="userid" name="FKo57rjbw2nrfg84ko8ngge543c"/>
+        </table>
+        <table name="address">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="latitude" size="250" type="varchar"/>
+            <column name="longitude" size="250" type="varchar"/>
+            <column name="street" size="10" type="varchar"/>
+            <column name="city" size="45" type="varchar"/>
+            <column name="state" size="45" type="varchar"/>
+            <column name="country" size="45" type="varchar"/>
+            <column name="pincode" size="11" type="varchar"/>
+            <column name="addressLine1" not-null="true" size="100" type="varchar"/>
+            <column name="addressLine2" size="100" type="varchar"/>
+            <column name="landmark" size="250" type="varchar"/>
+        </table>
+        
+        <table name="attachment">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="19" type="bigint"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="displayname" not-null="true" size="200" type="varchar"/>
+            <column name="isrequirement" type="bit"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="last_modifier" delete-action="restrict" name="FK8AF7592338236DA2" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FK8AF759237722C36E" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FKfhm7bkpykrgjj01d45qd2vqnc" to-table="users"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKrcqppbinl7wdd6sjq66qx3fi0" to-table="users"/>
+            <index column="last_modifier" name="FK8AF7592338236DA2"/>
+            <index column="creator" name="FK8AF759237722C36E"/>
+        </table>
+        <table name="audit">
+            <pk column="AUDIT_ID" name="PRIMARY"/>
+            <column name="AUDIT_ID" not-null="true" size="19" type="bigint"/>
+            <column name="ACTION" size="2147483647" type="longvarchar" type-name="LONGTEXT"/>
+            <column name="AUDIT_ACTION_NAME" size="100" type="varchar"/>
+            <column name="AUDIT_ACTION_TYPE" size="100" type="varchar"/>
+            <column name="AUDIT_DATE" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="host" size="2147483647" type="longvarchar" type-name="LONGTEXT"/>
+            <column name="PAGE" size="2147483647" type="longvarchar" type-name="LONGTEXT"/>
+            <column name="PARAMETERS" size="2147483647" type="longvarchar" type-name="LONGTEXT"/>
+            <column name="remote_host" size="2147483647" type="longvarchar" type-name="LONGTEXT"/>
+            <column name="sessionid" size="2147483647" type="longvarchar" type-name="LONGTEXT"/>
+            <column name="SUCCESS" size="1" type="char"/>
+            <column name="userAgent" size="2147483647" type="longvarchar" type-name="LONGTEXT"/>
+            <column name="USER_FULLNAME" size="2147483647" type="longvarchar" type-name="LONGTEXT"/>
+            <column name="USER_ID" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="exceptionDetails" size="2147483647" type="longvarchar" type-name="LONGTEXT"/>
+            <fk column="USER_ID" delete-action="restrict" name="FK58D9BDB55246F77" to-table="users"/>
+            <fk column="USER_ID" delete-action="restrict" name="FK5ld6lsorbv4jarr6hraxxy7j4" to-table="users"/>
+            <index column="USER_ID" name="FK58D9BDB55246F77"/>
+        </table>
+        <table name="bpmn_task_view_mapping">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="context_json" size="255" type="varchar"/>
+            <column name="created_time" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="creator" size="10" type="integer" type-name="INT"/>
+            <column name="is_active" size="1" type="bit"/>
+            <column name="is_formproperty" size="1" type="bit"/>
+            <column default="0" name="is_inserted_into_appDB" type="bit"/>
+            <column name="mapping_type" size="255" type="varchar"/>
+            <column name="model_id" size="10" type="integer" type-name="INT"/>
+            <column name="model_name" size="255" type="varchar"/>
+            <column name="modified_time" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="process_definition_id" size="50" type="varchar"/>
+            <column name="resource_id" size="50" type="varchar"/>
+            <column name="task_name" size="50" type="varchar"/>
+            <column name="view_id" size="10" type="integer" type-name="INT"/>
+            <column name="view_name" size="50" type="varchar"/>
+            <column name="view_type" size="255" type="varchar"/>
+        </table>
+        <table name="comment">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="19" type="bigint"/>
+            <column name="comment" size="255" type="varchar"/>
+            <column name="entity_name" size="255" type="varchar"/>
+            <column name="entity_id" size="10" type="integer" type-name="INT"/>
+            <column name="creationtime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedtime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="createdby" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="modifiedby" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="createdby" delete-action="restrict" name="FK38A5EE5FEC3A9881" to-table="users"/>
+            <fk column="modifiedby" delete-action="restrict" name="FK51twemswmw2n4070v8n7hpjcd" to-table="users"/>
+            <fk column="createdby" delete-action="restrict" name="FKrdnoxvuj8ko0ou6na0t4e2nmm" to-table="users"/>
+            <fk column="modifiedby" delete-action="restrict" name="new_fk_createdby3" to-table="users"/>
+            <index column="createdby" name="FK38A5EE5FEC3A9881"/>
+            <index column="modifiedby" name="FK38A5EE5FEC3A9885"/>
+        </table>
+        <table name="custom_report">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="app_name" size="255" type="varchar"/>
+            <column name="file_location" size="255" type="varchar"/>
+            <column name="is_deleted" size="1" type="bit"/>
+            <column name="is_enabled" size="1" type="bit"/>
+            <column name="report_name" size="255" type="varchar"/>
+            <column name="report_type" size="255" type="varchar"/>
+            <column name="report_role" size="1000" type="varchar"/>
+            <column name="schedule" size="255" type="varchar"/>
+            <column name="sendEmailFlag" size="1" type="bit"/>
+            <column name="filter_data" size="2147483647" type="longvarbinary" type-name="LONGBLOB"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="creator" delete-action="restrict" name="FKae676lvvhdv6eekw58l0ir8q" to-table="users"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKh64ydcqnhisi7oc5yj7o1obt6" to-table="users"/>
+            <index column="creator" name="FKae676lvvhdv6eekw58l0ir8q"/>
+            <index column="last_modifier" name="FKh64ydcqnhisi7oc5yj7o1obt6"/>
+            <index column="report_name" name="UK_5qt2d5blxsjol647katetm7ts" unique="true"/>
+        </table>
+        <table name="email_notifications">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="19" type="bigint"/>
+            <column name="email" not-null="true" size="65535" type="longvarchar" type-name="TEXT"/>
+            <column name="createdDate" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="sentBy" size="255" type="varchar"/>
+            <column name="subject" size="255" type="varchar"/>
+            <column name="send_to" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="send_to" delete-action="restrict" name="FKF13C31855690D7E4" to-table="users"/>
+            <fk column="send_to" delete-action="restrict" name="FKbvw5dw3d9ftq7tmcrvfvlthk6" to-table="users"/>
+            <index column="send_to" name="FKF13C31855690D7E4"/>
+        </table>
+        <table name="facebok">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="text1" size="255" type="varchar"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="creator" delete-action="restrict" name="FK8m90a30lg72wvknrjyj98r0dq" to-table="users"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKj42m08ffuvyuyvl8kuhthdptv" to-table="users"/>
+            <index column="creator" name="FK8m90a30lg72wvknrjyj98r0dq"/>
+            <index column="last_modifier" name="FKj42m08ffuvyuyvl8kuhthdptv"/>
+        </table>
+        
+        <table name="fbviuf">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="dcbdsib" size="255" type="varchar"/>
+            <column name="ufuvy" size="255" type="varchar"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="last_modifier" delete-action="restrict" name="FK410urrq2tdcf9cxxrb3e283f3" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FK6bnotf6aldw374855fmolopr5" to-table="users"/>
+            <index column="last_modifier" name="FK410urrq2tdcf9cxxrb3e283f3"/>
+            <index column="creator" name="FK6bnotf6aldw374855fmolopr5"/>
+        </table>
+        
+        <table name="file_resource">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="19" type="bigint"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="content" size="16777215" type="longvarbinary" type-name="MEDIUMBLOB"/>
+            <column name="filePath" size="255" type="varchar"/>
+            <column name="name" not-null="true" size="200" type="varchar"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="attachment" not-null="true" size="19" type="bigint"/>
+            <fk column="attachment" delete-action="restrict" name="FK52976B711703314C" to-table="attachment"/>
+            <fk column="last_modifier" delete-action="restrict" name="FK52976B7138236DA2" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FK52976B717722C36E" to-table="users"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKcuopq5ersy4l8qq2devicupe0" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FKjk0qm815fdcwf53nntott1ytr" to-table="users"/>
+            <fk column="attachment" delete-action="restrict" name="FKrmh020t4jivg8sna52nvqetbd" to-table="attachment"/>
+            <index column="attachment" name="FK52976B711703314C"/>
+            <index column="last_modifier" name="FK52976B7138236DA2"/>
+            <index column="creator" name="FK52976B717722C36E"/>
+        </table>
+        <table name="file_upload_resource">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="filename" size="255" type="varchar"/>
+            <column name="path" size="255" type="varchar"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKBB14EBC938236DA2" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FKBB14EBC97722C36E" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FKa3mxtryvyq6an2jm6pc2h2qkr" to-table="users"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKkid37v5b1yyebjrolah7wv269" to-table="users"/>
+            <index column="last_modifier" name="FKBB14EBC938236DA2"/>
+            <index column="creator" name="FKBB14EBC97722C36E"/>
+        </table>
+        <table name="folder">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="isdelete" not-null="true" type="bit"/>
+            <column name="name" size="255" type="varchar"/>
+            <column name="path" size="255" type="varchar"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="parent" size="10" type="integer" type-name="INT"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKB45D1C6E38236DA2" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FKB45D1C6E7722C36E" to-table="users"/>
+            <fk column="parent" delete-action="restrict" name="FKB45D1C6EAB91171E" to-table="folder"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKj0uvhi7xpipxha9dgom5n6pi1" to-table="users"/>
+            <fk column="parent" delete-action="restrict" name="FKn723yw8nhbr8yqihtaj3fmmjl" to-table="folder"/>
+            <fk column="creator" delete-action="restrict" name="FKrhn9qnp6i61c7uvto9y19i2qx" to-table="users"/>
+            <index column="last_modifier" name="FKB45D1C6E38236DA2"/>
+            <index column="creator" name="FKB45D1C6E7722C36E"/>
+            <index column="parent" name="FKB45D1C6EAB91171E"/>
+        </table>
+        <table name="foldercollaborator">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="allowfolderadd" not-null="true" type="bit"/>
+            <column name="allowresourceadd" not-null="true" type="bit"/>
+            <column name="allowresourcedelete" not-null="true" type="bit"/>
+            <column name="allowresourceedit" not-null="true" type="bit"/>
+            <column name="allowshare" type="bit"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="folder_id" not-null="true" size="10" type="integer" type-name="INT"/>
+            <column name="shared_user" not-null="true" size="10" type="integer" type-name="INT"/>
+            <fk column="creator" delete-action="restrict" name="FK4ej74gv8ny3fawq0yjl1j967q" to-table="users"/>
+            <fk column="last_modifier" delete-action="restrict" name="FK66E9D77438236DA2" to-table="users"/>
+            <fk column="folder_id" delete-action="restrict" name="FK66E9D774656E500" to-table="folder"/>
+            <fk column="creator" delete-action="restrict" name="FK66E9D7747722C36E" to-table="users"/>
+            <fk column="folder_id" delete-action="restrict" name="FKa9u3hopb784amo5spkdsytc53" to-table="folder"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKr1x15gih0xlhtnpnhd52bnebi" to-table="users"/>
+            <index column="last_modifier" name="FK66E9D77438236DA2"/>
+            <index column="folder_id" name="FK66E9D774656E500"/>
+            <index column="creator" name="FK66E9D7747722C36E"/>
+        </table>
+        <table name="form1">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="field1" size="255" type="varchar"/>
+            <column name="field2" size="255" type="varchar"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKagfo9u18x58gbvj1gtp93fd3" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FKc5ri16pqhvhog70jxib560yif" to-table="users"/>
+            <index column="last_modifier" name="FKagfo9u18x58gbvj1gtp93fd3"/>
+            <index column="creator" name="FKc5ri16pqhvhog70jxib560yif"/>
+        </table>
+        
+        <table name="form2">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column default="sachin" name="readonlyField" size="255" type="varchar"/>
+            <column default="kb" name="hiddenField" size="255" type="varchar"/>
+            <column default="male" name="gender" size="255" type="varchar"/>
+            <column name="normalfield" size="255" type="varchar"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="last_modifier" delete-action="restrict" name="FK4soo512vpqohkokgbti28i26a" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FKn1io3sbiwwp7tl69mrxdhdemk" to-table="users"/>
+            <index column="last_modifier" name="FK4soo512vpqohkokgbti28i26a"/>
+            <index column="creator" name="FKn1io3sbiwwp7tl69mrxdhdemk"/>
+        </table>
+        
+        <table name="password_expiry_details">
+            <pk column="username" name="PRIMARY"/>
+            <column name="username" not-null="true" size="30" type="varchar"/>
+            <column name="failed_attempts" not-null="true" size="3" type="tinyint"/>
+            <column name="locked" not-null="true" size="3" type="tinyint"/>
+            <column default="CURRENT_TIMESTAMP" name="last_updated_dt" not-null="true" size="19" type="timestamp"/>
+            <column name="history" size="320" type="varchar"/>
+            <column name="first_time_login" not-null="true" size="3" type="tinyint"/>
+        </table>
+        <table name="password_feature_config">
+            <pk column="username" name="PRIMARY"/>
+            <column name="username" not-null="true" size="30" type="varchar"/>
+            <column default="-1" name="expiration_interval" not-null="true" size="10" type="integer" type-name="INT"/>
+            <column default="1" name="first_time_change" not-null="true" size="3" type="tinyint"/>
+        </table>
+        <table name="permissions">
+            <pk column="permissionid" name="PRIMARY"/>
+            <column name="permissionid" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="permissionname" not-null="true" size="50" type="varchar"/>
+            <column name="description" not-null="true" size="200" type="varchar"/>
+        </table>
+        <table name="readonlyform">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="abc" size="255" type="varchar"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="last_modifier" delete-action="restrict" name="FK4bm65ycuwmfxsdhicj5tox11t" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FKgxvi72hy60g7yhyhs066y9bkg" to-table="users"/>
+            <index column="last_modifier" name="FK4bm65ycuwmfxsdhicj5tox11t"/>
+            <index column="creator" name="FKgxvi72hy60g7yhyhs066y9bkg"/>
+        </table>
+        
+        <table name="resource">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="fileSize" size="19" type="bigint"/>
+            <column name="isdelete" not-null="true" type="bit"/>
+            <column name="islatest" not-null="true" type="bit"/>
+            <column name="islock" not-null="true" type="bit"/>
+            <column name="name" not-null="true" size="125" type="varchar"/>
+            <column name="revision_note" size="255" type="varchar"/>
+            <column name="type" size="255" type="varchar"/>
+            <column name="version" not-null="true" size="10" type="integer" type-name="INT"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="parentfolder" not-null="true" size="10" type="integer" type-name="INT"/>
+            <column name="lockedby_user" size="10" type="integer" type-name="INT"/>
+            <column name="revisionNote" size="255" type="varchar"/>
+            <fk column="creator" delete-action="restrict" name="FK84rufu33cecut8j8dyd222mko" to-table="users"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKEBABC40E38236DA2" to-table="users"/>
+            <fk column="parentfolder" delete-action="restrict" name="FKEBABC40E466B8C0C" to-table="folder"/>
+            <fk column="creator" delete-action="restrict" name="FKEBABC40E7722C36E" to-table="users"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKa726gohp233x06swfnawuabnw" to-table="users"/>
+            <fk column="parentfolder" delete-action="restrict" name="FKd69nshs0a3s3va2yjicbr5u8b" to-table="folder"/>
+            <index column="last_modifier" name="FKEBABC40E38236DA2"/>
+            <index column="parentfolder" name="FKEBABC40E466B8C0C"/>
+            <index column="creator" name="FKEBABC40E7722C36E"/>
+        </table>
+        <table name="resource_attach">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="filename" size="250" type="varchar"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="attach_id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="resource_id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="last_modifier" delete-action="restrict" name="FK102F1B9638236DA2" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FK102F1B967722C36E" to-table="users"/>
+            <fk column="attach_id" delete-action="restrict" name="FK102F1B9692415826" to-table="file_upload_resource"/>
+            <fk column="resource_id" delete-action="restrict" name="FK102F1B96E955D780" to-table="resource"/>
+            <fk column="resource_id" delete-action="restrict" name="FK3quyv28j0rhtejo61jhwv0nhx" to-table="resource"/>
+            <fk column="attach_id" delete-action="restrict" name="FK4x4026mkw6lhaob29d1hauwu7" to-table="file_upload_resource"/>
+            <fk column="creator" delete-action="restrict" name="FKowh84fifdsibfgxhckbbxqhgk" to-table="users"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKtkxjo4yjybymhtl730hdsu4so" to-table="users"/>
+            <index column="last_modifier" name="FK102F1B9638236DA2"/>
+            <index column="creator" name="FK102F1B967722C36E"/>
+            <index column="attach_id" name="FK102F1B9692415826"/>
+            <index column="resource_id" name="FK102F1B96E955D780"/>
+        </table>
+        <table name="resource_file_attach">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="entityId" size="10" type="integer" type-name="INT"/>
+            <column name="entityName" size="250" type="varchar"/>
+            <column name="extension" size="250" type="varchar"/>
+            <column name="filename" size="250" type="varchar"/>
+            <column name="keyLabel" size="250" type="varchar"/>
+            <column name="path" not-null="true" size="255" type="varchar"/>
+            <column name="sizes" size="19" type="bigint"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="creator" delete-action="restrict" name="FKcmgxncgsmohth27wuf4dccwxb" to-table="users"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKhu0y1tjy7m18dl1iljhtrjwdp" to-table="users"/>
+            <index column="creator" name="FKcmgxncgsmohth27wuf4dccwxb"/>
+            <index column="last_modifier" name="FKhu0y1tjy7m18dl1iljhtrjwdp"/>
+        </table>
+        
+        <table name="resourcecollaborator">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="allowdelete" not-null="true" type="bit"/>
+            <column name="allowedit" not-null="true" type="bit"/>
+            <column name="allowshare" type="bit"/>
+            <column name="creator" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="last_modifier" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="resource_id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="shared_user" not-null="true" size="10" type="integer" type-name="INT"/>
+            <fk column="resource_id" delete-action="restrict" name="FK7ukdfc6d74q42qxphsn5cigq6" to-table="resource"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKA45A0F1438236DA2" to-table="users"/>
+            <fk column="creator" delete-action="restrict" name="FKA45A0F147722C36E" to-table="users"/>
+            <fk column="resource_id" delete-action="restrict" name="FKA45A0F14E955D780" to-table="resource"/>
+            <fk column="creator" delete-action="restrict" name="FKarf0tf26bhbmjoosfd0np10ss" to-table="users"/>
+            <fk column="last_modifier" delete-action="restrict" name="FKd60gbnito8vub19lijt3mfiql" to-table="users"/>
+            <index column="last_modifier" name="FKA45A0F1438236DA2"/>
+            <index column="creator" name="FKA45A0F147722C36E"/>
+            <index column="resource_id" name="FKA45A0F14E955D780"/>
+        </table>
+        
+        <table name="roles">
+            <pk column="roleid" name="PRIMARY"/>
+            <column name="roleid" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="rolename" not-null="true" size="50" type="varchar"/>
+            <column name="description" not-null="true" size="200" type="varchar"/>
+            <index column="rolename" name="roles_unique_1" unique="true"/>
+        </table>
+        <table name="social_credentials">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="userid" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="facebook_token" size="300" type="varchar"/>
+            <column name="twitter_token" size="250" type="varchar"/>
+            <column name="gmail_token" size="250" type="varchar"/>
+            <column name="facebook_userid" size="250" type="varchar"/>
+            <column name="google_userid" size="30" type="varchar"/>
+            <fk column="userid" delete-action="restrict" name="FKl2y9rd3lq3mk53nax1hvjsnwl" to-table="users"/>
+            <fk column="userid" delete-action="restrict" name="fk_user_id" to-table="users"/>
+            <index column="userid" name="fk_user_id"/>
+        </table>
+        <table name="token">
+            <pk column="Id" name="PRIMARY"/>
+            <column name="Id" not-null="true" size="10" type="integer" type-name="INT"/>
+            <column name="date" not-null="true" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="series" not-null="true" size="100" type="varchar"/>
+            <column name="tokenValue" not-null="true" size="100" type="varchar"/>
+            <column name="username" not-null="true" size="100" type="varchar"/>
+        </table>
+        <table name="user_config">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="user_language" size="3" type="char" type-name="ENUM"/>
+            <column name="currency_format" size="8" type="char" type-name="ENUM"/>
+            <column name="date_format" size="14" type="char" type-name="ENUM"/>
+            <column name="time_zone" size="255" type="varchar"/>
+            <column name="user_id" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <fk column="user_id" delete-action="restrict" name="FKl8juqglanlq5r8qxkaiftldqh" to-table="users"/>
+            <fk column="user_id" delete-action="restrict" name="user_coig_fk_uuuser" to-table="users"/>
+            <index column="user_id" name="user_coig_fk_uuuser"/>
+        </table>
+        
+        
+        <table name="users">
+            <pk column="userid" name="PRIMARY"/>
+            <column name="userid" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="username" not-null="true" size="30" type="varchar"/>
+            <column name="password" not-null="true" size="50" type="varchar"/>
+            <column name="enabled" size="1" type="bit"/>
+            <column name="firstname" size="50" type="varchar"/>
+            <column name="lastname" size="50" type="varchar"/>
+            <column name="telephone" size="20" type="varchar"/>
+            <column name="email" not-null="true" size="50" type="varchar"/>
+            <column name="activationkey" size="50" type="varchar"/>
+            <column name="profile_image" size="16777215" type="longvarbinary" type-name="MEDIUMBLOB"/>
+            <column name="registeredby" size="1" type="bit"/>
+            <column name="user_address" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="creatorId" size="10" type="integer" type-name="INT"/>
+            <column name="createdTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <column name="modifiedTime" size="19" type="timestamp" type-name="DATETIME"/>
+            <fk column="user_address" delete-action="restrict" name="FKsue5t8iduwjkwk6emukmxt66x" to-table="address"/>
+            <fk column="user_address" delete-action="restrict" name="user_address" to-table="address"/>
+            <fk column="user_address" delete-action="cascade" name="users_ibfk_1" to-table="address"/>
+            <fk column="user_address" delete-action="cascade" name="users_ibfk_2" to-table="address"/>
+            <fk column="user_address" delete-action="cascade" name="users_ibfk_3" to-table="address"/>
+            <index name="users_unique_1" unique="true">
+                <on column="username"/>
+                <on column="email"/>
+            </index>
+            <index column="user_address" name="user_address"/>
+        </table>
+        
+        <table name="uvbfuivhdfuhvuifd">
+            <pk column="id" name="PRIMARY"/>
+            <column name="id" not-null="true" size="10" type="integer" type-name="INT UNSIGNED"/>
+            <column name="fonvifdnvuifd" size="255" type="varchar"/>
+        </table>
+    </schema>
+</schemas>

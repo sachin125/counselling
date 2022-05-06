@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans" 
+xmlns="http://www.springframework.org/schema/security" 
+xmlns:cap="http://www.springframework.org/schema/p" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd ">
+
+   	<!-- url level security  AND https element is the parent for all web-related namespace functionality-->
+	<!-- The attribute "auto-config=true" defines three elements <form-login/>, <http-basic/> and <logout> default value false. Automatically registers a login form, BASIC authentication,  anonymous authentication, logout services, remember-me and  servlet-api-integration. If set to "true", all of these capabilities are  added (although you can still customize the configuration of each  by providing the respective element) 
+	http-basic authentication model   default model implemetation, for form based model, we have to change form-login login-page='/login.jsp'
+-->
+    <http pattern="/jsp/userRegister.jsp" security="none" />
+    <http pattern="/app/assets/**" security="none" />
+    <http pattern="/app/uiapp/security/**" security="none" />
+    <http pattern="/app/landing-page/**" security="none" />
+    <http pattern="/rest/unauthorize/**" security="none" />
+    <http pattern="/rest/Dashboard/**" security="none" />
+    <http pattern="/jsp/redirect.jsp" security="none" />
+    <http pattern="redirect.jsp" security="none" />
+    <http pattern="/jsp/login.jsp" security="none" />
+    <http pattern="/jsp/error.jsp" security="none" />
+    <http pattern="/jsp/error_404.jsp" security="none" />
+    <http pattern="/jsp/useractivation.jsp/**" security="none" />
+    <http pattern="/jsp/resetPassword.jsp/**" security="none" />
+    
+     <!--Exposing session information in the URL is a growing security risk  the URL rewriting logic that would append the jsessionid to the URL can now be disabled by setting the disable-url-rewriting=”true” in the <http> namespace -->
+     <!-- auto-config="true", spring security will provide deafult login page
+		it is equilvant to 
+		<http>
+			<form-login />
+			<http-basic />
+			<logout />
+		  </http>     
+       -->
+    <http access-decision-manager-ref="accessDecisionManager" 
+			auto-config="false"  
+			disable-url-rewriting="true" 
+			entry-point-ref="loginUrlAuthenticationEntryPoint" 
+			use-expressions="false">
+        <intercept-url access="monitoring" pattern="/monitoring**" />
+        <csrf disabled="true" />
+        <intercept-url access="IS_AUTHENTICATED_REMEMBERED" pattern="/**" />
+        <custom-filter position="FORM_LOGIN_FILTER" ref="usernameAuthenticationFilter" />
+        <logout logout-success-url="/jsp/login.jsp" />
+        <custom-filter position="LAST" ref="passwordUpdateSecurityInterceptor" />
+        <headers>
+            <frame-options policy="SAMEORIGIN" />
+        </headers>
+    </http>
+
+	<!-- allow to use hasRole (exa. in permission.jsp)-->
+    <beans:bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" id="webexpressionHandler" />
+	<!--http elements need it-->
+<!--
+    <beans:bean class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint" id="loginUrlAuthenticationEntryPoint">
+        <beans:constructor-arg name="loginFormUrl" value="/jsp/login.jsp" />
+    </beans:bean>
+-->
+    <beans:bean class="com.inn.counselling.security.spring.CustomEntryPoint" id="loginUrlAuthenticationEntryPoint">
+        <beans:constructor-arg name="loginFormUrl" value="/jsp/login.jsp" />
+    </beans:bean>
+    
+   <!-- AuthenticationManager, default is ProviderManager -->
+    <authentication-manager alias="authenticationManager">
+		<!--deafult is DAOAuthenticationProvider -->
+        <authentication-provider ref="customDaoAuthenticationProvider" />
+    </authentication-manager>
+    
+    <beans:bean class="com.inn.counselling.security.authentication.CustomDaoAuthenticationProvider" id="customDaoAuthenticationProvider">
+        <beans:property name="userDetailsService" ref="customUserDetailsManager" />
+    </beans:bean>
+        <beans:bean class="com.inn.counselling.security.authentication.CustomUserDetailsManager" id="customUserDetailsManager">
+        <beans:property name="dataSource" ref="dataSource" />
+    </beans:bean>
+    <!--http elements need it-->
+    <beans:bean class="com.inn.counselling.security.authentication.CustomUsernamePasswordAuthenticationFilter" id="usernameAuthenticationFilter">
+        <beans:property name="alwaysUseDefaultTargetUrl" value="true" />
+        <beans:property name="postOnly" value="true" />
+        <beans:property name="authenticationSuccessHandler" ref="authSuccessHandler" />
+        <beans:property name="authenticationManager" ref="authenticationManager" />
+        <beans:property name="authenticationFailureHandler" ref="authFailureHandler" />
+    </beans:bean>
+    <!-- Configuring RoleVoter bean to use custom access roles, by default roles 
+		should be in the form ROLE_{XXX} ....   accessDecisionManager bean is defined so that we can have our custom roles, by default all the roles should start with ROLE_ and we are overriding this setting in the roleVoter bean property rolePrefix.-->
+        <!--http elements need it-->
+    <beans:bean class="org.springframework.security.access.vote.AffirmativeBased" id="accessDecisionManager">
+        <beans:constructor-arg name="decisionVoters">
+            <beans:list>
+                <beans:bean class="org.springframework.security.access.vote.RoleVoter">
+                    <beans:property name="rolePrefix" value="" />
+                </beans:bean>
+                <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+            </beans:list>
+        </beans:constructor-arg>
+    </beans:bean>
+    <beans:bean class="com.inn.counselling.security.spring.CustomAuthenticationSuccessHandler" id="authSuccessHandler">
+        <!-- Authentication success handler declaration.-->
+        <beans:property name="redirectUrlMap">
+            <beans:props>
+                <beans:prop key="LOCKED">/jsp/login.jsp?login_error=2</beans:prop>
+                <beans:prop key="PASSWORD_EXPIRED">/jsp/change_password.jsp?scenario=pwd_expired</beans:prop>
+<!--
+                <beans:prop key="FIRST_TIME_LOGIN">/jsp/change_password.jsp?scenario=first_time_login</beans:prop>
+-->
+                <beans:prop key="FIRST_TIME_LOGIN">/jsp/index.jsp</beans:prop>
+                <beans:prop key="NOTIFY">/jsp/index.jsp</beans:prop>
+                <beans:prop key="NORMAL">/jsp/index.jsp</beans:prop>
+            </beans:props>
+        </beans:property>
+    </beans:bean>
+    
+     <beans:bean class="com.inn.counselling.security.spring.CustomAuthenticationFailureHandler" id="authFailureHandler">
+        <beans:property name="redirectUrlMap">
+            <beans:props>
+                <beans:prop key="LOCKED">/jsp/login.jsp?login_error=2</beans:prop>
+ <!--               <beans:prop key="PASSWORD_EXPIRED">/jsp/change_password.jsp?scenario=pwd_expired</beans:prop>
+                <beans:prop key="FIRST_TIME_LOGIN">/jsp/change_password.jsp?scenario=first_time_login</beans:prop>
+                <beans:prop key="NOTIFY">/jsp/index.jsp</beans:prop>
+-->
+                <beans:prop key="ERR_USER_NOT_EXIST">/jsp/login.jsp?login_error=3</beans:prop>
+                <beans:prop key="NORMAL_AUTH_ERR">/jsp/login.jsp?login_error=1</beans:prop>
+            </beans:props>
+        </beans:property>
+    </beans:bean>
+    
+    
+    
+    
+    <beans:bean class="com.inn.counselling.security.spring.ChangePasswordSecurityInterceptor" id="passwordUpdateSecurityInterceptor">
+        <!-- Bean Declaration Change Password Security Interceptor-->
+        <beans:property name="passwordUpdateUrl" value="/j_security_pwd_update_check" />
+        <beans:property name="newPasswordParam" value="newPassword" />
+        <beans:property name="postUpdateRedirectUrl" value="/jsp/index.jsp" />
+        <beans:property name="updateFailRedirectUrl" value="/jsp/change_password.jsp" />
+    </beans:bean>
+<!--
+    <beans:bean class="com.inn.counselling.model.CustomTokenRepository" id="customTokenRepository">
+    </beans:bean>
+-->
+
+    <beans:bean class="com.inn.counselling.security.mgmt.PasswordHistoryService" id="passwordHistoryServiceBean" scope="prototype">
+        <beans:description>implements algorithm to manage password</beans:description>
+        <beans:property name="maxHistoryCount" value="6" />
+    </beans:bean>
+    
+    <beans:bean class="com.inn.counselling.security.mgmt.PasswordExpiryLoadStoreService" id="passwordLoadStoreServiceBean" init-method="init" scope="prototype">
+        <!-- Password Expiry Load Store Service declaration.-->
+        <beans:description>loads and stores back user specific password expiration properties</beans:description>
+        <beans:property name="detailsFetchQuery" value="select username,  failed_attempts, locked, last_updated_dt, history, first_time_login from password_expiry_details where username=:username" />
+        <beans:property name="featureFetchQuery" value="select username, expiration_interval, first_time_change from password_feature_config where username=:username" />
+        <beans:property name="successDetailsUpdateQuery" value="PasswordDetailUpdate" />
+        <beans:property name="unsuccessDetailsUpdateQuery" value="insert into password_expiry_details (username,failed_attempts, locked) values ( :username,:failed_attempts, :locked) ON DUPLICATE KEY UPDATE failed_attempts=:failed_attempts, locked=:locked" />
+        <beans:property name="userDetailsQuery" value="select u.username from users u where u.username=:username" />
+        <beans:property name="featureSetQuery" value="insert into password_feature_config (username,expiration_interval, first_time_change) values ( :provisionedUser, ${DEFAULT_EXPIRY_INTERVAL}, 1)" />
+    </beans:bean>
+    
+    <beans:bean class="com.inn.counselling.security.mgmt.PasswordExpiryDataAnalyzerService" id="passwordExpiryDataAnalyzerBean" scope="prototype">
+        <!-- PasswordExpiryDataAnalyzerService Bean declaration.-->
+        <beans:description>analyze password expiry data properties</beans:description>
+        <beans:property name="expiryNotificationDuration" value="${EXPIRY_NOTIFICATION_DURATION}" />
+        <beans:property name="defaultExpiryInterval" value="${DEFAULT_EXPIRY_INTERVAL}" />
+        <beans:property name="maxAttempts" value="${MAX_ATTEMPTS}" />
+        <beans:property name="orgList" value="" />
+        <beans:property name="neverExpireIndicator" value="-2" />
+        <beans:property name="defaultExpireIndicator" value="-1" />
+    </beans:bean>
+    <beans:bean class="com.inn.counselling.security.mgmt.PasswordManagementService" destroy-method="destroy" id="passwordMgmtServiceBean" init-method="init" scope="prototype">
+        <!-- PasswordManagementService Bean declaration.-->
+        <beans:description>represents a password management service bean.</beans:description>
+        <beans:property name="passwordHistoryService" ref="passwordHistoryServiceBean" />
+        <beans:property name="passwordLoadStoreService" ref="passwordLoadStoreServiceBean" />
+        <beans:property name="passwordExpiryDataAnalyzer" ref="passwordExpiryDataAnalyzerBean" />
+    </beans:bean>
+
+    <beans:bean class="com.inn.counselling.service.mail.MailServiceProvider" id="mailServiceProvider">
+        <beans:description>represents a email properties</beans:description>
+    </beans:bean>
+
+    <beans:bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+        <beans:property name="beanNames">
+            <beans:list>
+                <beans:value>*RestImpl</beans:value>
+            </beans:list>
+        </beans:property>
+        <beans:property name="interceptorNames">
+            <beans:list/>
+        </beans:property>
+    </beans:bean>
+
+
+<beans:bean  id="httpFirewall" class="com.inn.counselling.security.authentication.StrictHttpFirewall"></beans:bean>
+<http-firewall ref="httpFirewall"/>
+
+</beans:beans>

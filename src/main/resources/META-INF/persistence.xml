@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.2" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_2.xsd">
+	<persistence-unit name="DEFAULT" transaction-type="RESOURCE_LOCAL">
+		<properties>
+			<property name="hibernate-dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+			<property name="hibernate.hbm2ddl.auto" value="update"/>
+			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.format_sql" value="true"/>
+			<property name="hibernate.cache.use_query_cache" value="false"/>
+			<property name="hibernate.cache.use_second_level_cache" value="false"/>
+<!--
+			<property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>
+			<property name="hibernate.jdbc.factory_class" value="net.bull.javamelody.HibernateBatcherFactory"/>
+-->
+		</properties>
+		
+		<class>com.inn.counselling.model.Users</class>
+		<class>com.inn.counselling.model.Role</class>
+		<class>com.inn.counselling.model.Permission</class>
+		<class>com.inn.counselling.model.Address</class>
+		
+	</persistence-unit>
+</persistence>
